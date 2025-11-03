@@ -13,9 +13,21 @@ STATIC_FOLDER = 'static'
 
 # These configurations represent the "AI Models and Palettes"
 MODELS = {
-  'hubble': { 'name': 'Hubble Palette (SHO)', 'red_channel': 2, 'green_channel': 0, 'blue_channel': 1 },
+  'hubble': { 'name': 'Hubble Palette (SHO)', 'red_channel': 2, 'green_channel': 1, 'blue_channel': 0 },
   'natural': { 'name': 'Natural Color (RGB)', 'red_channel': 0, 'green_channel': 1, 'blue_channel': 2 },
-  'custom': { 'name': 'Custom BGR', 'red_channel': 2, 'green_channel': 1, 'blue_channel': 0 },
+  'custom': { 
+    'red_channel': 0,   # I filter → Red channel
+    'green_channel': 1, # V filter → Green channel  
+    'blue_channel': 2,  # B filter → Blue channel
+    'stretch_name': 'asinh',
+    'power': 3.0,
+    'black_point': 1.0,
+    'white_point': 99.5,
+    'saturation': 1.5,
+    'red_scale': 1.2,
+    'green_scale': 1.0,
+    'blue_scale': 0.9
+}
 }
 
 class AppController:
