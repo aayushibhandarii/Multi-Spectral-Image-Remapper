@@ -51,4 +51,4 @@ backend/uploads/
 backend/static/processed_*.png
 
 # Frontend specific
-build/
+**/*.fits
