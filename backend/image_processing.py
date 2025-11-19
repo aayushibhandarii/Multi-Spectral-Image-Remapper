@@ -1,6 +1,7 @@
 from PIL import Image
 import numpy as np
 from models import ProcessedImage
+from denoiser import AstronomicalDenoiser
 
 class AIModel:
     """AI Model Engine with proper RGB processing based on reference code."""
@@ -138,11 +139,28 @@ class AIModel:
 
 
 class ImageProcessor:
-    """Handles the core image processing workflow."""
+    """Handles the core image processing workflow with ML denoising."""
     def __init__(self):
         self.model_engine = AIModel()
+        # Initialize ML denoiser
+        self.denoiser = AstronomicalDenoiser(model_path='models/dncnn_astro.pth')
 
     def process_image(self, fits_data, model_params):
         """Orchestrates the colorization from FITS data to a ProcessedImage."""
-        pil_image = self.model_engine.get_prediction(fits_data.get_raw_data(), model_params)
+        
+        # Get raw FITS data
+        raw_data = fits_data.get_raw_data()
+        
+        # Apply ML denoising if enabled
+        if model_params.get('use_denoising', True):  # Default to True
+            print("🤖 Applying ML-based noise reduction...")
+            denoised_data = self.denoiser.denoise_fits_cube(raw_data)
+            print("✓ Denoising complete!")
+        else:
+            print("⊗ Denoising disabled, using raw data")
+            denoised_data = raw_data
+        
+        # Colorize the (denoised) data
+        pil_image = self.model_engine.get_prediction(denoised_data, model_params)
+        
         return ProcessedImage(pil_image)

@@ -87,12 +87,14 @@ class AppController:
             model_params['red_scale'] = model_params.get('red_scale', 1.0)
             model_params['green_scale'] = model_params.get('green_scale', 1.0)
             model_params['blue_scale'] = model_params.get('blue_scale', 1.0)
+            
+            # ML Denoising parameter (new!)
+            model_params['use_denoising'] = model_params.get('use_denoising', True)
 
+            # Process image with ML denoising
             processed_image = self.image_processor.process_image(fits_data_obj, model_params)
             
             pil_img = processed_image.export_to()
-            
-
 
             # Encode image to Base64
             buffered = BytesIO()
